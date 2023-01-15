@@ -1,4 +1,4 @@
-### Get folder names calendar, inbox & send items from mailbox x
+### Get folder names calendar, inbox & send items from a mailbox
 
 ```powershell
 $Email = (Get-Mailbox "<user>").UserPrincipalName

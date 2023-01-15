@@ -10,15 +10,8 @@ Foreach ($user in $allUsers)
      
     If ($photo.PictureData -ne $null) 
     { 
-        [io.file]::WriteAllBytes($path,$photo.PictureData) 
-        Write-Host "Foto" $gebruiker_id.SamAccountName "gedownload -" $user.Alias 
- 
+        [io.file]::WriteAllBytes($path,$photo.PictureData) # Download file 
         $ad_photo = [byte[]](Get-Content "$path" -Encoding byte) 
-        Set-ADUser $gebruiker_id.SamAccountName -Replace @{thumbnailPhoto=$ad_photo} 
-        Write-Host "Foto" $gebruiker_id.SamAccountName "in AD geplaatst - " $user.Alias 
-    } 
-    Else 
-    { 
-        Write-Host "Geen foto van" $user.Alias 
+        Set-ADUser $gebruiker_id.SamAccountName -Replace @{thumbnailPhoto=$ad_photo} # Update photo in AD
     } 
 } 

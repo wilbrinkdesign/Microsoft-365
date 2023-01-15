@@ -1,4 +1,4 @@
-**CSV file**
+### CSV file
 
 ```csv
 Email,Coupon
@@ -6,7 +6,7 @@ user1@domein.com,NL1234
 user2@domein.com,NL5678
 ```
 
-**Send mail script**
+### Send mail script
 ```powershell
 Start-Transcript -Path "${PSCommandPath}.log" | Out-Null
 

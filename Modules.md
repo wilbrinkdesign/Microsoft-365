@@ -1,10 +1,10 @@
-**Get all installed modules**
+### Get all installed modules
 
 ```powershell
 Get-InstalledModule
 ```
 
-**SharePoint Online**
+### SharePoint Online
 
 ```powershell
 Install-Module Microsoft.Online.SharePoint.PowerShell
@@ -13,7 +13,7 @@ Connect-SPOService -Url <url>
 Connect-PnPOnline -Url <url> -UseWebLogin -WarningAction 0
 ```
 
-**Azure Online**
+### Azure Online
 
 ```powershell
 Install-Module MSOnline
@@ -24,7 +24,7 @@ Connect-MsolService
 Connect-AzureAD
 ```
 
-**Exchange Online**
+### Exchange Online
 
 ```powershell
 Install-Module PowershellGet
@@ -33,7 +33,7 @@ Update-Module ExchangeOnlineManagement
 Connect-ExchangeOnline <upn> -ShowBanner:$False
 ```
 
-**Teams Online**
+### Teams Online
 
 ```powershell
 Install-Module MicrosoftTeams
@@ -42,7 +42,7 @@ Update-Module MicrosoftTeams
 Connect-MicrosoftTeams
 ```
 
-**AD**
+### AD
 
 ```powershell
 Get-WindowsCapability -Name RSAT* -Online | Add-WindowsCapability -Online # Windows Clients
@@ -50,7 +50,7 @@ Install-WindowsFeature RSAT-AD-PowerShell # Windows Servers
 Import-Module ActiveDirectory
 ```
 
-**Intune**
+### Intune
 
 ```powershell
 Install-Module -Name Microsoft.Graph.Intune
