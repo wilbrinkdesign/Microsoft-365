@@ -1,0 +1,1 @@
+Get-AzureADDevice -All $true | where { $_.ApproximateLastLogonTimeStamp -lt "1/1/2022" }

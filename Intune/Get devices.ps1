@@ -1,0 +1,1 @@
+Get-IntuneManagedDevice | where { $_.operatingSystem -eq "Android" -and $_.lastSyncDateTime -lt "8/11/2021" }
