@@ -1,7 +1,7 @@
 ### Get all Office 365 groups without a owner
 
 ```powershell
-Get-UnifiedGroup | Where-Object {-Not $_.ManagedBy}
+Get-UnifiedGroup | Where-Object { -Not $_.ManagedBy }
 ```
 
 ### Add a user to a Office 365 group as member and owner
