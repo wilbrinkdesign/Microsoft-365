@@ -11,33 +11,21 @@
 		- Certificate for connecting to a Azure App where we have permissions to read all the M365 licenses.
 
 	.EXAMPLE
-	PS> <script_name>.ps1 -Org <name> -CertificateThumbprint <thumbprint>
+	PS> <script_name>.ps1 -TenantID <id> -AppID <id> -CertificateThumbprint <thumbprint>
 #>
 
 Param(
-	[Parameter(Mandatory=$True)][ValidateSet("<org1>", "<org2>")][string]$Org,
-	[string]$CertificateThumbprint = ""
+	[Parameter(Mandatory=$True)][string]$TenantID,
+	[Parameter(Mandatory=$True)][string]$AppID,
+	[Parameter(Mandatory=$True)][string]$CertificateThumbprint
 )
 
 # If PS module Microsoft.Graph is installed, continue
 If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 {
 	# Connect to the Azure App within the tenant that has permissions to read all Azure Apps
-	If ($Org -eq "<org1>")
-	{
-		$Tenant_ID = ""
-		$App_ID = ""
-
-		Connect-MgGraph -ClientId $App_ID -TenantId $Tenant_ID -CertificateThumbprint $CertificateThumbprint -NoWelcome
-	}
-	Elseif ($Org -eq "<org2>")
-	{
-		$Tenant_ID = ""
-		$App_ID = ""
-
-		Connect-MgGraph -ClientId $App_ID -TenantId $Tenant_ID -CertificateThumbprint $CertificateThumbprint -NoWelcome
-	}
-
+	Connect-MgGraph -ClientId $AppID -TenantId $TenantID -CertificateThumbprint $CertificateThumbprint -NoWelcome
+	
 	# Get all M365 licenses
 	$Licenses = Get-MgSubscribedSku | Where-Object SkuPartNumber -match "E3|E5|F1" | select -Property @{N='TotalUnits';E={$_.PrepaidUnits.Enabled}}, ConsumedUnits, SkuPartNumber
 	$Complete_List = @()
@@ -52,7 +40,6 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 
 			$List = New-Object -TypeName PSObject
 			$List | Add-Member -NotePropertyName Name -NotePropertyValue $License.SkuPartNumber
-			$List | Add-Member -NotePropertyName Org -NotePropertyValue $Organisatie
 			$List | Add-Member -NotePropertyName Total -NotePropertyValue $License.TotalUnits
 			$List | Add-Member -NotePropertyName Used -NotePropertyValue $License.ConsumedUnits
 			$List | Add-Member -NotePropertyName Remaining -NotePropertyValue $Remaining

@@ -11,32 +11,20 @@
 		- Certificate for connecting to a Azure App where we have permissions to read the Intune environment.
 
 	.EXAMPLE
-	PS> <script_name>.ps1 -Org <name> -CertificateThumbprint <thumbprint>
+	PS> <script_name>.ps1 -TenantID <id> -AppID <id> -CertificateThumbprint <thumbprint>
 #>
 
 Param(
-	[Parameter(Mandatory=$True)][ValidateSet("<org1>", "<org2>")][string]$Org,
-	[string]$CertificateThumbprint = ""
+	[Parameter(Mandatory=$True)][string]$TenantID,
+	[Parameter(Mandatory=$True)][string]$AppID,
+	[Parameter(Mandatory=$True)][string]$CertificateThumbprint
 )
 
 # If PS module Microsoft.Graph is installed, continue
 If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 {
 	# Connect to the Azure App within the tenant that has permissions to read all Azure Apps
-	If ($Org -eq "<org1>")
-	{
-		$Tenant_ID = ""
-		$App_ID = ""
-
-		Connect-MgGraph -ClientId $App_ID -TenantId $Tenant_ID -CertificateThumbprint $CertificateThumbprint -NoWelcome
-	}
-	Elseif ($Org -eq "<org2>")
-	{
-		$Tenant_ID = ""
-		$App_ID = ""
-
-		Connect-MgGraph -ClientId $App_ID -TenantId $Tenant_ID -CertificateThumbprint $CertificateThumbprint -NoWelcome
-	}
+	Connect-MgGraph -ClientId $AppID -TenantId $TenantID -CertificateThumbprint $CertificateThumbprint -NoWelcome
 
 	# Which kind of Intune certificates there are with an expiration date
 	$Types_Certs = @("Push", "VPP", "DEP")
