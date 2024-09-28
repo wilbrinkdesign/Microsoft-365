@@ -68,8 +68,8 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 		}
 		
 		$List = New-Object -TypeName PSObject
-		$List | Add-Member -NotePropertyName Naam -NotePropertyValue $Type
-		$List | Add-Member -NotePropertyName Dagen -NotePropertyValue $Days.Days
+		$List | Add-Member -NotePropertyName Name -NotePropertyValue $Type
+		$List | Add-Member -NotePropertyName Days -NotePropertyValue $Days.Days
 
 		$Complete_List += $List
 	}

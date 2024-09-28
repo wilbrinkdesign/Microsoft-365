@@ -51,7 +51,7 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 			$Warning = If ($License.SkuPartNumber -match "E5") { 50 } ElseIf ($License.SkuPartNumber -match "F1") { 10 } Else { 10 }
 
 			$List = New-Object -TypeName PSObject
-			$List | Add-Member -NotePropertyName Naam -NotePropertyValue $License.SkuPartNumber
+			$List | Add-Member -NotePropertyName Name -NotePropertyValue $License.SkuPartNumber
 			$List | Add-Member -NotePropertyName Org -NotePropertyValue $Organisatie
 			$List | Add-Member -NotePropertyName Total -NotePropertyValue $License.TotalUnits
 			$List | Add-Member -NotePropertyName Used -NotePropertyValue $License.ConsumedUnits
