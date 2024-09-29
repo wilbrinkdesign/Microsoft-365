@@ -30,7 +30,7 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 	Connect-MgGraph -ClientId $AppID -TenantId $TenantID -CertificateThumbprint $CertificateThumbprint -NoWelcome
 	
 	# Get all M365 licenses
-	$Licenses = Get-MgSubscribedSku | Where-Object SkuPartNumber -match "E3|E5|F1" | select -Property @{N='TotalUnits';E={$_.PrepaidUnits.Enabled}}, ConsumedUnits, SkuPartNumber
+	$Licenses = Get-MgSubscribedSku | select -Property @{N='TotalUnits';E={$_.PrepaidUnits.Enabled}}, ConsumedUnits, SkuPartNumber
 	$Complete_List = @()
 
 	# Loop through all licenses
