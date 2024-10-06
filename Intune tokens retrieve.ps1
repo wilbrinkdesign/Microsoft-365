@@ -8,7 +8,7 @@
 
 	Dependencies: 
 		- Microsoft.Graph PS module
-		- Certificate for connecting to a Azure App where we have permissions to read the Intune environment.
+		- Certificate for connecting to an Azure App where we have permissions to read the Intune environment.
 
 	.LINK
 	https://helloitsliam.com/2022/04/20/connect-to-microsoft-graph-powershell-using-an-app-registration/
@@ -39,24 +39,20 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 		If ($Type -eq "Push") # MDM Push Certificate
 		{
 			$Cert_Push = Invoke-MgGraphRequest -Uri "https://graph.microsoft.com/v1.0/deviceManagement/applePushNotificationCertificate" -Method GET
-
 			$End_Date = Get-Date $Cert_Push.expirationDateTime
-			$Days = New-TimeSpan -Start (Get-Date) -End $End_Date # How many days the certificate is still valid
 		}
 		ElseIf ($Type -eq "VPP") # Intune VPP token
 		{
 			$Cert_VPP = Invoke-MgGraphRequest -Uri "https://graph.microsoft.com/v1.0/deviceAppManagement/vppTokens" -Method GET -OutputType PSObject | select -Expand value
-
 			$End_Date = Get-Date $Cert_VPP.expirationDateTime
-			$Days = New-TimeSpan -Start (Get-Date) -End $End_Date # How many days the certificate is still valid
 		}
 		ElseIf ($Type -eq "DEP") # MDM Enrollment token certificate
 		{
 			$Cert_DEP = Invoke-MgGraphRequest -Uri "https://graph.microsoft.com/beta/deviceManagement/depOnboardingSettings" -Method GET -OutputType PSObject | select -Expand value
-
 			$End_Date = Get-Date $Cert_DEP.tokenExpirationDateTime
-			$Days = New-TimeSpan -Start (Get-Date) -End $End_Date # How many days the certificate is still valid
 		}
+
+		$Days = New-TimeSpan -Start (Get-Date) -End $End_Date # How many days the certificate is still valid
 		
 		$List = New-Object -TypeName PSObject
 		$List | Add-Member -NotePropertyName Name -NotePropertyValue $Type
