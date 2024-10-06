@@ -8,7 +8,7 @@
 
 	Dependencies:
 		- Microsoft.Graph PS module
-		- Certificate for connecting to a Azure App where we have permissions to read all Azure Apps.
+		- Certificate for connecting to an Azure App where we have permissions to read all Azure Apps.
 
 	.LINK
 	https://helloitsliam.com/2022/04/20/connect-to-microsoft-graph-powershell-using-an-app-registration/
