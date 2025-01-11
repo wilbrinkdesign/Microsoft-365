@@ -1,0 +1,59 @@
+<#
+	.DESCRIPTION
+	Check how many M365 licenses the tenant has.
+	
+	.NOTES
+	Author: Mark Wilbrink
+	Date: see Git info
+
+	Dependencies: 
+		- Microsoft.Graph PS module
+		- Certificate for connecting to an Azure App where we have permissions to read all the M365 licenses.
+
+	.LINK
+	https://helloitsliam.com/2022/04/20/connect-to-microsoft-graph-powershell-using-an-app-registration/
+
+	.EXAMPLE
+	PS> <script_name>.ps1 -TenantID <id> -AppID <id> -CertificateThumbprint <thumbprint>
+#>
+
+Param(
+	[Parameter(Mandatory=$True)][string]$TenantID,
+	[Parameter(Mandatory=$True)][string]$AppID,
+	[Parameter(Mandatory=$True)][string]$CertificateThumbprint
+)
+
+# If PS module Microsoft.Graph is installed, continue
+If ((Get-Module -ListAvailable -Name Microsoft.Graph))
+{
+	# Connect to the Azure App within the tenant that has permissions to read all Azure Apps
+	Connect-MgGraph -ClientId $AppID -TenantId $TenantID -CertificateThumbprint $CertificateThumbprint -NoWelcome
+	
+	# Get all M365 licenses
+	$Licenses = Get-MgSubscribedSku | select -Property @{N='TotalUnits';E={$_.PrepaidUnits.Enabled}}, ConsumedUnits, SkuPartNumber
+	$Complete_List = @()
+
+	# Loop through all licenses
+	Foreach ($License in $Licenses)
+	{
+		If ($License.TotalUnits -ne 0) # Only show licenses that are in use
+		{
+			$Remaining = [math]::Round($License.TotalUnits - $License.ConsumedUnits)
+
+			$List = New-Object -TypeName PSObject
+			$List | Add-Member -NotePropertyName Name -NotePropertyValue $License.SkuPartNumber
+			$List | Add-Member -NotePropertyName Total -NotePropertyValue $License.TotalUnits
+			$List | Add-Member -NotePropertyName Used -NotePropertyValue $License.ConsumedUnits
+			$List | Add-Member -NotePropertyName Remaining -NotePropertyValue $Remaining
+			$List | Add-Member -NotePropertyName Date -NotePropertyValue (Get-Date)
+
+			$Complete_List += $List
+		}
+	}
+
+	Return $Complete_List | ConvertTo-Json
+}
+Else
+{
+	Write-Host "PowerShell module not installed: Microsoft.Graph" -ForegroundColor Red
+}
