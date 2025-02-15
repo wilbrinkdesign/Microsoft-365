@@ -6,12 +6,13 @@
 	Author: Mark Wilbrink
 	Date: see Git info
 
-	Dependencies: 
+	Dependencies:
+		- Certificate for connecting to Microsoft Graph
 		- Microsoft.Graph PS module
-		- Certificate for connecting to an Azure App where we have permissions to read the Intune environment.
-
-	.LINK
-	https://helloitsliam.com/2022/04/20/connect-to-microsoft-graph-powershell-using-an-app-registration/
+		- M365:
+			- App registration
+			- API permissions: DeviceManagementManagedDevices.Read.All, DeviceManagementConfiguration.Read.All, DeviceManagementServiceConfig.Read.All
+			- Upload certificate
 
 	.EXAMPLE
 	PS> <script_name>.ps1 -TenantID <id> -AppID <id> -CertificateThumbprint <thumbprint>
