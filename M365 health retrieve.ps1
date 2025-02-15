@@ -1,6 +1,6 @@
 <#
 	.DESCRIPTION
-	Check how many M365 licenses the tenant has.
+	Check the M365 overall health.
 	
 	.NOTES
 	Author: Mark Wilbrink
