@@ -9,25 +9,30 @@
 	Dependencies: 
 		- Microsoft.Graph PS module
 		- Certificate for connecting to an Azure App where we have permissions to read all the M365 licenses.
+		- System environment variable 'M365_Health_Secret'
 
 	.LINK
 	https://helloitsliam.com/2022/04/20/connect-to-microsoft-graph-powershell-using-an-app-registration/
 
 	.EXAMPLE
-	PS> <script_name>.ps1 -TenantID <id> -AppID <id> -CertificateThumbprint <thumbprint>
+	PS> <script_name>.ps1 -TenantID <id> -ClientSecret <thumbprint>
 #>
 
 Param(
 	[Parameter(Mandatory=$True)][string]$TenantID,
 	[Parameter(Mandatory=$True)][string]$AppID,
-	[Parameter(Mandatory=$True)][string]$CertificateThumbprint
+	[string]$ClientSecret = [System.Environment]::GetEnvironmentVariable("M365_Health_Secret", "Machine")
 )
 
 # If PS module Microsoft.Graph is installed, continue
 If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 {
+	# Convert secret
+	$Secret = ConvertTo-SecureString $ClientSecret -AsPlainText -Force
+	$Client_Secret_Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $AppID, $Secret
+
 	# Connect to the Azure App within the tenant that has permissions to read all Azure Apps
-	Connect-MgGraph -ClientId $AppID -TenantId $TenantID -CertificateThumbprint $CertificateThumbprint -NoWelcome
+	Connect-MgGraph -TenantId $TenantID -ClientSecretCredential $Client_Secret_Credential -NoWelcome
 	
 	# Get M365 health
 	$Health = Get-MgServiceAnnouncementIssue | Where-Object { $_.EndDateTime -eq $null -and $_.Classification -eq "incident" }
