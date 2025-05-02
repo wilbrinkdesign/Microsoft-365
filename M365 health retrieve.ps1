@@ -12,7 +12,7 @@
 			- App registration
 			- API permissions: ServiceHealth.Read.All
 			- Secret for connecting to Microsoft Graph
-		- System environment variable 'M365_Health_Secret' with the secret as plain text
+		- System environment variable 'M365_Secret' with the secret as plain text
 
 	.EXAMPLE
 	PS> <script_name>.ps1 -TenantID <id> -AppID <id>
@@ -21,7 +21,7 @@
 Param(
 	[Parameter(Mandatory=$True)][string]$TenantID,
 	[Parameter(Mandatory=$True)][string]$AppID,
-	[string]$ClientSecret = [System.Environment]::GetEnvironmentVariable("M365_Health_Secret", "Machine")
+	[string]$ClientSecret = [System.Environment]::GetEnvironmentVariable("M365_Secret", "Machine")
 )
 
 # If PS module Microsoft.Graph is installed, continue
