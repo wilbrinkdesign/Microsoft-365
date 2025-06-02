@@ -32,7 +32,6 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 
 	# Which kind of Intune certificates there are with an expiration date
 	$Types_Certs = @("Push", "VPP", "DEP")
-	$Complete_List = @()
 
 	# Loop through all certificates
 	Foreach ($Type in $Types_Certs)
@@ -59,7 +58,7 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 		$List | Add-Member -NotePropertyName Name -NotePropertyValue $Type
 		$List | Add-Member -NotePropertyName Days -NotePropertyValue $Days.Days
 
-		$Complete_List += $List
+		[array]$Complete_List += $List
 	}
 
 	Return $Complete_List | ConvertTo-Json

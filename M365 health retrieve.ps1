@@ -38,7 +38,6 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 		
 		# Get M365 health
 		$Health = Get-MgServiceAnnouncementIssue | Where-Object { $_.EndDateTime -eq $null -and $_.Classification -eq "incident" }
-		$Complete_List = @()
 
 		# Loop through all health issues
 		Foreach ($Message in $Health)
@@ -47,7 +46,7 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 			$List | Add-Member -NotePropertyName ID -NotePropertyValue $Message.Id
 			$List | Add-Member -NotePropertyName Title -NotePropertyValue $Message.Title
 
-			$Complete_List += $List
+			[array]$Complete_List += $List
 		}
 
 		Return $Complete_List | ConvertTo-Json

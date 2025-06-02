@@ -32,7 +32,6 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 	
 	# Get all M365 licenses
 	$Licenses = Get-MgSubscribedSku | select -Property @{N='TotalUnits';E={$_.PrepaidUnits.Enabled}}, ConsumedUnits, SkuPartNumber
-	$Complete_List = @()
 
 	# Loop through all licenses
 	Foreach ($License in $Licenses)
@@ -48,7 +47,7 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 			$List | Add-Member -NotePropertyName Remaining -NotePropertyValue $Remaining
 			$List | Add-Member -NotePropertyName Date -NotePropertyValue (Get-Date)
 
-			$Complete_List += $List
+			[array]$Complete_List += $List
 		}
 	}
 

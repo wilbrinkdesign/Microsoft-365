@@ -32,7 +32,6 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 
 	# Get all secrets
 	$Apps_Secrets = Get-MgApplication -All
-	$Complete_List = @()
 
 	# Todays date for comparison with the dates from the secrets
 	$Date_Today = Get-Date
@@ -54,7 +53,7 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 			$List | Add-Member -NotePropertyName Days -NotePropertyValue $Days.Days
 			$List | Add-Member -NotePropertyName Type -NotePropertyValue "Secret"
 
-			$Complete_List += $List
+			[array]$Complete_List += $List
 		}
 	}
 
@@ -75,7 +74,7 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 			$List | Add-Member -NotePropertyName Days -NotePropertyValue $Days.Days
 			$List | Add-Member -NotePropertyName Type -NotePropertyValue "Certificate"
 
-			$Complete_List += $List
+			[array]$Complete_List += $List
 		}
 	}	
 
