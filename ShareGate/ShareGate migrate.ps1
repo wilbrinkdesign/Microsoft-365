@@ -46,7 +46,10 @@ If (Test-Path $CSV)
 
 		Try
 		{
-			$Credentials = Connect-Site -Url $CSV_Import[0].Src_Url -Browser # Grab the first URL en authenticate and use these credentials for future sites
+			If (!$Credentials) # If credentials var is empty, authenticate
+			{
+				$global:Credentials = Connect-Site -Url $CSV_Import[0].Src_Url -Browser # Grab the first URL en authenticate and use these credentials for future sites
+			}
 		}
 		Catch
 		{
@@ -189,7 +192,7 @@ If (Test-Path $CSV)
 			}
 
 			# Rebuild CSV file with correct state
-			$CSV_Import | Export-Csv $CSV_File -Delimiter ";" -NoTypeInformation
+			$CSV_Import | Export-Csv $CSV_File -Delimiter ";" -Encoding Default -NoTypeInformation
 		}
 	}
 	Else
