@@ -32,6 +32,7 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 
 	# Get all secrets
 	$Apps_Secrets = Get-MgApplication -All
+	$Apps_SAML_Certs = Get-MgServicePrincipal -All
 
 	# Todays date for comparison with the dates from the secrets
 	$Date_Today = Get-Date
@@ -40,7 +41,7 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 	Foreach ($App_Secret in $Apps_Secrets)
 	{
 		# Loop through all the secrets
-		Foreach ($Secret in ($App_Secret | select -ExpandProperty PasswordCredentials))
+		Foreach ($Secret in ($App_Secret | Select-Object -ExpandProperty PasswordCredentials))
 		{
 			$End_Date = Get-Date $Secret.EndDateTime
 			$Days = New-TimeSpan -Start $Date_Today -End $End_Date # How many days the secret is still valid
@@ -61,7 +62,7 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 	Foreach ($App_Cert in $Apps_Secrets)
 	{
 		# Loop through all the secrets
-		Foreach ($Cert in ($App_Cert | select -ExpandProperty KeyCredentials))
+		Foreach ($Cert in ($App_Cert | Select-Object -ExpandProperty KeyCredentials))
 		{
 			$End_Date = Get-Date $Cert.EndDateTime
 			$Days = New-TimeSpan -Start $Date_Today -End $End_Date # How many days the secret is still valid
@@ -77,6 +78,27 @@ If ((Get-Module -ListAvailable -Name Microsoft.Graph))
 			[array]$Complete_List += $List
 		}
 	}	
+
+	# Loop through all SAML configs that has a certificate
+	Foreach ($App_SAML in $Apps_SAML_Certs)
+	{
+		# Loop through all the secrets
+		Foreach ($Cert in ($App_SAML | Select-Object -ExpandProperty KeyCredentials))
+		{
+			$End_Date = Get-Date $Cert.EndDateTime
+			$Days = New-TimeSpan -Start $Date_Today -End $End_Date # How many days the secret is still valid
+			
+			$List = New-Object -TypeName PSObject
+			$List | Add-Member -NotePropertyName ID -NotePropertyValue $Cert.keyId
+			$List | Add-Member -NotePropertyName Name -NotePropertyValue $App_Cert.DisplayName
+			$List | Add-Member -NotePropertyName AppID -NotePropertyValue $App_Cert.AppId
+			$List | Add-Member -NotePropertyName Date -NotePropertyValue (Get-Date $End_Date -Format "dd-MM-yyyy")
+			$List | Add-Member -NotePropertyName Days -NotePropertyValue $Days.Days
+			$List | Add-Member -NotePropertyName Type -NotePropertyValue "SAML"
+
+			$Complete_List += $List
+		}
+	}
 
 	Return $Complete_List | ConvertTo-Json
 }
