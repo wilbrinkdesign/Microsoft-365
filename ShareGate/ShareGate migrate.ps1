@@ -7,7 +7,7 @@
 	Date: see Git info
 
 	Dependencies:
-		- ShareGate server
+		- ShareGate software
 		- PnP.PowerShell PS module
 		- CSV file
 
