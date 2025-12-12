@@ -50,7 +50,7 @@ If (Test-Path $CSV)
 
 		Foreach ($Site in $CSV_Import)
 		{
-			If ($Site.Migrated -ne "Yes") # If the site is not migrated, then skip
+			If ($Site.Migrated -eq "Yes") # If the site is migrated, then clean
 			{
 				Try
 				{
