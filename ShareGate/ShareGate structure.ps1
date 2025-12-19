@@ -82,8 +82,9 @@ If (Test-Path $CSV)
 					Try
 					{
 						$Location = "$($Site.Dst_Url)/$($Site.Dst_Lib)/$($Site.Dst_Folder)"
+						$Location_Lib = (Get-PnPList $Site.Dst_Bieb).RootFolder.ServerRelativeUrl
 
-						Add-PnPFolder -Name $Site.Dst_Folder -Folder $Site.Dst_Lib
+						Add-PnPFolder -Name $Site.Dst_Folder -Folder $Location_Lib
 						Write-Host "Created: $Location" -ForegroundColor Green
 					}
 					Catch
@@ -97,8 +98,9 @@ If (Test-Path $CSV)
 					Try
 					{
 						$Location = "$($Site.Dst_Url)/$($Site.Dst_Lib)/$($Site.Dst_Folder)/$($Site.Dst_Subfolder)"
+						$Location_Lib = (Get-PnPList $Site.Dst_Bieb).RootFolder.ServerRelativeUrl
 
-						Add-PnPFolder -Name $Site.Dst_Subfolder -Folder "$($Site.Dst_Lib)/$($Site.Dst_Folder)"
+						Add-PnPFolder -Name $Site.Dst_Subfolder -Folder "$Location_Lib/$($Site.Dst_Folder)"
 						Write-Host "Created: $Location" -ForegroundColor Green
 					}
 					Catch

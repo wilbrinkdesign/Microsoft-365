@@ -67,8 +67,9 @@ If (Test-Path $CSV)
 					Try
 					{
 						$Location = "$($Site.Src_Url)/$($Site.Src_Lib)/$($Site.Src_Folder)/$($Site.Src_Subfolder)"
+						$Location_Lib = (Get-PnPList $Site.Src_Bieb).RootFolder.ServerRelativeUrl
 
-						Remove-PnPFolder -Name "$($Site.Src_Folder)/$($Site.Src_Subfolder)" -Folder $Site.Src_Lib -Force
+						Remove-PnPFolder -Name "$($Site.Src_Folder)/$($Site.Src_Subfolder)" -Folder $Location_Lib -Force
 						Write-Host "Removed: $Location" -ForegroundColor Green
 					}
 					Catch
@@ -81,8 +82,9 @@ If (Test-Path $CSV)
 					Try
 					{
 						$Location = "$($Site.Src_Url)/$($Site.Src_Lib)/$($Site.Src_Folder)"
+						$Location_Lib = (Get-PnPList $Site.Src_Bieb).RootFolder.ServerRelativeUrl
 
-						Remove-PnPFolder -Name $Site.Src_Folder -Folder $Site.Src_Lib -Force
+						Remove-PnPFolder -Name $Site.Src_Folder -Folder $Location_Lib -Force
 						Write-Host "Removed: $Location" -ForegroundColor Green
 					}
 					Catch
