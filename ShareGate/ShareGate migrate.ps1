@@ -41,6 +41,9 @@ If (Test-Path $CSV)
 		} While ($? -eq $False)
 
 		$Copy_Settings = New-CopySettings -OnContentItemExists IncrementalUpdate
+		$Version_Template = New-PropertyTemplate -VersionHistory:$false
+		$Version_Settings = If ($DisableVersionHistory) { @{ "Template" = $Version_Template } } Else { "" } # Create a var that we use as a parameter for command 'Copy-Content' if this script was started with the option '-DisableVersionHistory'.
+
 
 		$CSV_Import = Import-Csv $CSV_File -Delimiter ";" -Encoding Default
 
@@ -86,21 +89,21 @@ If (Test-Path $CSV)
 						{
 							$Dst_Path = "$($Site.Dst_Url)/$($Site.Dst_Lib)/$($Site.Dst_Folder)/$($Site.Dst_Subfolder)"
 							Write-Host "Copy subfolder '$Src_Path' to: $Dst_Path" -ForegroundColor Yellow
-							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder "$($Site.Src_Folder)/$($Site.Src_Subfolder)" -DestinationFolder "$($Site.Dst_Folder)/$($Site.Dst_Subfolder)" -CopySettings $Copy_Settings
+							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder "$($Site.Src_Folder)/$($Site.Src_Subfolder)" -DestinationFolder "$($Site.Dst_Folder)/$($Site.Dst_Subfolder)" -CopySettings $Copy_Settings @Version_Settings
 							Write-Host "Subfolder '$Src_Path' copied to: $Dst_Path" -ForegroundColor Green
 						}
 						ElseIf ($Site.Dst_Folder) # Subfolder needs to be copied to a folder
 						{
 							$Dst_Path = "$($Site.Dst_Url)/$($Site.Dst_Lib)/$($Site.Dst_Folder)"
 							Write-Host "Copy subfolder '$Src_Path' to: $Dst_Path" -ForegroundColor Yellow
-							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder "$($Site.Src_Folder)/$($Site.Src_Subfolder)" -DestinationFolder $($Site.Dst_Folder) -CopySettings $Copy_Settings
+							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder "$($Site.Src_Folder)/$($Site.Src_Subfolder)" -DestinationFolder $($Site.Dst_Folder) -CopySettings $Copy_Settings @Version_Settings
 							Write-Host "Subfolder '$Src_Path' copied to: $Dst_Path" -ForegroundColor Green
 						}
 						Else # Subfolder needs to be copied to a library
 						{
 							$Dst_Path = "$($Site.Dst_Url)/$($Site.Dst_Lib)"
 							Write-Host "Copy subfolder '$Src_Path' to: $Dst_Path" -ForegroundColor Yellow
-							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder "$($Site.Src_Folder)/$($Site.Src_Subfolder)" -CopySettings $Copy_Settings
+							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder "$($Site.Src_Folder)/$($Site.Src_Subfolder)" -CopySettings $Copy_Settings @Version_Settings
 							Write-Host "Subfolder '$Src_Path' copied to: $Dst_Path" -ForegroundColor Green
 						}
 
@@ -122,21 +125,21 @@ If (Test-Path $CSV)
 						{
 							$Dst_Path = "$($Site.Dst_Url)/$($Site.Dst_Lib)/$($Site.Dst_Folder)/$($Site.Dst_Subfolder)"
 							Write-Host "Copy folder '$Src_Path' to: $Dst_Path" -ForegroundColor Yellow
-							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder "$($Site.Src_Folder)" -DestinationFolder "$($Site.Dst_Folder)/$($Site.Dst_Subfolder)" -CopySettings $Copy_Settings
+							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder "$($Site.Src_Folder)" -DestinationFolder "$($Site.Dst_Folder)/$($Site.Dst_Subfolder)" -CopySettings $Copy_Settings @Version_Settings
 							Write-Host "Folder '$Src_Path' copied to: $Dst_Path" -ForegroundColor Green
 						}
 						ElseIf ($Site.Dst_Folder) # Folder needs to be copied to another folder
 						{
 							$Dst_Path = "$($Site.Dst_Url)/$($Site.Dst_Lib)/$($Site.Dst_Folder)"
 							Write-Host "Copy folder '$Src_Path' to: $Dst_Path" -ForegroundColor Yellow
-							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder $($Site.Src_Folder) -DestinationFolder $($Site.Dst_Folder) -CopySettings $Copy_Settings
+							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder $($Site.Src_Folder) -DestinationFolder $($Site.Dst_Folder) -CopySettings $Copy_Settings @Version_Settings
 							Write-Host "Folder '$Src_Path' copied to: $Dst_Path" -ForegroundColor Green
 						}
 						Else # Folder needs to be copied to a library
 						{
 							$Dst_Path = "$($Site.Dst_Url)/$($Site.Dst_Lib)"
 							Write-Host "Copy folder '$Src_Path' to: $Dst_Path" -ForegroundColor Yellow
-							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder $($Site.Src_Folder) -CopySettings $Copy_Settings
+							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -SourceFolder $($Site.Src_Folder) -CopySettings $Copy_Settings @Version_Settings
 							Write-Host "Folder '$Src_Path' copied to: $Dst_Path" -ForegroundColor Green
 						}
 
@@ -158,21 +161,21 @@ If (Test-Path $CSV)
 						{
 							$Dst_Path = "$($Site.Dst_Url)/$($Site.Dst_Lib)/$($Site.Dst_Folder)/$($Site.Dst_Subfolder)"
 							Write-Host "Copy library '$Src_Path' to: $Dst_Path" -ForegroundColor Yellow
-							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -DestinationFolder "$($Site.Dst_Folder)/$($Site.Dst_Subfolder)" -CopySettings $Copy_Settings
+							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -DestinationFolder "$($Site.Dst_Folder)/$($Site.Dst_Subfolder)" -CopySettings $Copy_Settings @Version_Settings
 							Write-Host "Library '$Src_Path' copied to: $Dst_Path" -ForegroundColor Green
 						}
 						ElseIf ($Site.Dst_Folder) # Library needs to be copied to a folder
 						{
 							$Dst_Path = "$($Site.Dst_Url)/$($Site.Dst_Lib)/$($Site.Dst_Folder)"
 							Write-Host "Copy library '$Src_Path' to: $Dst_Path" -ForegroundColor Yellow
-							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -DestinationFolder $($Site.Dst_Folder) -CopySettings $Copy_Settings
+							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -DestinationFolder $($Site.Dst_Folder) -CopySettings $Copy_Settings @Version_Settings
 							Write-Host "Library '$Src_Path' copied to: $Dst_Path" -ForegroundColor Green
 						}
 						Else # Library needs to be copied to another library
 						{
 							$Dst_Path = "$($Site.Dst_Url)/$($Site.Dst_Lib)"
 							Write-Host "Copy library '$Src_Path' to: $Dst_Path" -ForegroundColor Yellow
-							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -CopySettings $Copy_Settings
+							Copy-Content -SourceList $Src_Lib -DestinationList $Dst_Lib -CopySettings $Copy_Settings @Version_Settings
 							Write-Host "Library '$Src_Path' copied to: $Dst_Path" -ForegroundColor Green
 						}
 
