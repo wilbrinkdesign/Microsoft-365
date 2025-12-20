@@ -20,5 +20,6 @@ Yes;https://tenantname.sharepoint.com/sites/SiteA;Library A;Folder A;Subfolder A
 ```
 
 ### Tips
-- Use the parameter '-CSV' to pass your own CSV file to the script. Otherwise you will get the default file, which may not be present on your server.
+- Use the parameter '-CSV' to pass your own CSV file to the script.
+- Use the parameter '-DisableVersionHistory' if you do not want to copy any versions of the SharePoint files.
 - Start the ShareGate tool on your server and click on "Tasks". You will see all the PowerShell tasks started from the command line.

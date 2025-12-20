@@ -12,10 +12,12 @@
 
 	.EXAMPLE
 	PS> <script_name>.ps1 -CSV <csv_file>
+	PS> <script_name>.ps1 -CSV <csv_file> -DisableVersionHistory
 #>
 
 Param(
-	[string]$CSV = ".\ShareGate.csv"
+	[string]$CSV,
+	[switch]$DisableVersionHistory
 )
 
 If (Test-Path $CSV)
