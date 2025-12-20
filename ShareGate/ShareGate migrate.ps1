@@ -8,7 +8,6 @@
 
 	Dependencies:
 		- ShareGate software
-		- PnP.PowerShell PS module
 		- CSV file
 
 	.EXAMPLE
@@ -43,7 +42,6 @@ If (Test-Path $CSV)
 		$Copy_Settings = New-CopySettings -OnContentItemExists IncrementalUpdate
 		$Version_Template = New-PropertyTemplate -VersionHistory:$false
 		$Version_Settings = If ($DisableVersionHistory) { @{ "Template" = $Version_Template } } Else { "" } # Create a var that we use as a parameter for command 'Copy-Content' if this script was started with the option '-DisableVersionHistory'.
-
 
 		$CSV_Import = Import-Csv $CSV_File -Delimiter ";" -Encoding Default
 
